@@ -1,7 +1,8 @@
 import maya.cmds as cmds
 # create a procedural asset generator that creates an ice cream parfait.
-
 # create a class for the parfait
+
+
 class Parfait():
 
     def __init__(self):
@@ -22,6 +23,10 @@ class Parfait():
     # create glass cup size function
     # use user input for small or large glass
 
+    def create_glass(self):
+        self.glass_obj, self.glass_node = cmds.polyCone(name="glass", height=self.glass_size, radius=0.5)
+        cmds.setAttr(f"{self.glass_obj}.translateY", self.glass_size)
+        cmds.xform(rotation=[180, 0, 0])
     # create ice cream scoop amount function
     # use user input for scoops (1-5)
     # use user input for ice cream flavor, use different shaders for each flavor
