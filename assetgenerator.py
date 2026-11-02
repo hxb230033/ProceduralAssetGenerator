@@ -12,7 +12,7 @@ class Parfait():
         self.scoop_radius = self.glass_radius
         self.cherry_radius = .1
         self.cherry_amount = 3.0
-        self.straw_amount = 1.0
+        self.straw_amount = 2
     # parameters for parfait will be cup size, amount of scoops, and toppings.
     # get user input for cup size, scoops, flavor, cherries, and straws.
 
@@ -55,8 +55,24 @@ def create_scoops(self):
 
 
 def create_cherries(self):
-    self.cherry_obj, self.cherry_node = cmds.polySphere(name="cherry", radius=self.cherry_radius)
+    pass
+    self.cherry_obj, self.cherry_node = cmds.polySphere(name="cherry#", radius=self.cherry_radius)
     cmds.xform(translation=[0, 2, 0])
+    self.cherries = [self.cherry_obj]
+
+    for i in range(1, self.cherry_amount):
+        cherry_multiple = cmds.instance(self.cherry_obj, name="cherry#")[0]
+
+
+def create_straws(self):
+    self.straw_obj, self.straw_node = cmds.polyCylinder(name="straw#", radius=0.03, height=1.5)
+    cmds.xform(translation=[.5, self.glass_size+.5, 0])
+    cmds.xform(rotation=[0, 0, -15])
+
+    for i in range(1, self.straw_amount):
+        straw_multiple = cmds.instance(self.straw_obj, name="straw#")[0]
+        cmds.xform(straw_multiple, rotation=[-10, -10, -10])
+        cmds.xform(translation=[.5, self.glass_size+.5, -.1])
 
 
 # create straw amount function
