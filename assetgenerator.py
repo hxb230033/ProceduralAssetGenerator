@@ -22,8 +22,7 @@ class Parfait():
         self.create_scoops()
         self.create_cherry()
         self.create_straws()
-        self.finalscoop_ylocation()
-        # cmds.group([self.glass_obj, self.scoops_obj, self.cherry_obj, self.straw_obj], name="customParfait")
+        cmds.group([self.glass_obj, self.scoop_obj, self.cherry_obj, self.straw_obj], name="customParfait")
     # create glass cup size function
     # use user input for small or large glass
 
@@ -53,16 +52,14 @@ class Parfait():
     def finalscoop_ylocation(self):
         # get y location of the last ice cream scoop
         final_scoop = self.scoops[-1]
-        print(final_scoop)
-        y_location = cmds.getAttr(final_scoop.translateY)
-        print(y_location)
+        y_location = cmds.xform(final_scoop, query=True, translation=True, worldspace=True)[1]
+        return y_location
 
     def create_cherry(self):
-        if self.add_cherry is True:
+        if self.add_cherry:
             self.cherry_obj, self.cherry_node = cmds.polySphere(name="cherry", radius=self.cherry_radius)
-            cmds.xform(translation=[0, self.finalscoop_ylocation(), 0])
-        else:
-            pass
+            cherry_y = self.finalscoop_ylocation() + self.scoop_radius + self.cherry_radius
+            cmds.xform(self.cherry_obj, translation=[0, cherry_y, 0], worldSpace=True)
 
     def create_straws(self):
         self.straw_obj, self.straw_node = cmds.polyCylinder(name="straw#", radius=0.03, height=1.5)
