@@ -13,7 +13,7 @@ class Parfait():
 
     def __init__(self):
         self.glass_size = 1.0
-        self.scoop_amount = 4
+        self.scoop_amount  = 4
         self.glass_radius = 0.5
         self.scoop_radius = self.glass_radius
         self.cherry_radius = .1
@@ -42,7 +42,7 @@ class Parfait():
         shadergrp_name = f"{shader_name}_GRP"
         if cmds.objExists(shadergrp_name):
             return shadergrp_name
-        shader = cmds.shadingNode("lambert", asShader=True, name=shadergrp_name)
+        shader = cmds.shadingNode("lambert", asShader=True, name=shader_name)
         cmds.setAttr(f"{shader}.color", *FLAVORS[flavor], type="double3")
         shadergrp = cmds.sets(renderable=True, noSurfaceShader=True, empty=True, name=shadergrp_name)
         cmds.connectAttr(f"{shader}.outColor", f"{shadergrp}.surfaceShader", force=True)
@@ -82,12 +82,14 @@ class Parfait():
     def create_straws(self):
         self.straw_obj, self.straw_node = cmds.polyCylinder(name="straw#", radius=0.03, height=1.5)
         self.assign_flavor(self.straw_obj, "cherry")
-        cmds.xform(translation=[.5, self.glass_size+.5, 0])
+        cmds.xform(self.straw_obj, translation=[.5, self.glass_size+.5, 0])
         cmds.xform(rotation=[0, 0, -15])
+        self.straws = [self.straw_obj]
         for i in range(1, self.straw_amount):
             straw_multiple = cmds.instance(self.straw_obj, name="straw#")[0]
             cmds.xform(straw_multiple, rotation=[-10, -10, -10])
-            cmds.xform(translation=[.5, self.glass_size+.5, -.1])
+            cmds.xform(straw_multiple, translation=[.5, self.glass_size+.5, -.1 * i])
+            self.straws.append(straw_multiple)
 
 
 parfait1 = Parfait()
