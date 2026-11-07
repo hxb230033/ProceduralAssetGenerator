@@ -59,7 +59,16 @@ class ParfaitGUI(QtWidgets.QDialog):
         self.straws_spnbx.setRange(0, 4)
         self.straws_spnbx.setValue(self.parfait_generator.straw_amount)
         self.form_lay.addRow("Amount of Straws", self.straws_spnbx)
-        
+
+        self.enablegrpname_cb = QtWidgets.QCheckBox()
+        self.enablegrpname_cb.setChecked(False)
+        self.form_lay.addRow("Enable Group Name", self.enablegrpname_cb)
+        self.grpname_le = QtWidgets.QLineEdit()
+        self.grpname_le.setText(self.parfait_generator.grp_name)
+        self.grpname_le.setEnabled(False)
+        self.form_lay.addRow("Group Name", self.grpname_le)
+
+        self.main_lay.addLayout(self.form_lay)
 
     def create_connections(self):
         self.enablegrpname_cb.toggled.connect(self.toggle_grpname_le)
@@ -71,8 +80,4 @@ class ParfaitGUI(QtWidgets.QDialog):
         
     @QtCore.Slot()
     def create(self):
-        self.snowman_generator.torso_radius = self.torso_rad_dspnbx.value()
-        self.snowman_generator.grp_name = self.grpname_le.text()
-        self.snowman_generator.create()
-
- 
+        
