@@ -71,7 +71,6 @@ class Parfait():
         cmds.xform(self.scoop_obj, translation=[0, scoop_y, 0])
         self.assign_flavor(self.scoop_obj, self.flavor)
         self.scoops = [self.scoop_obj]
-        self.scoops = [self.scoop_obj]
         for i in range(1, self.scoop_amount):
             scoop_multiple = cmds.instance(self.scoop_obj, name="scoop#")[0]
             cmds.xform(scoop_multiple, translation=[0, scoop_y + i * scoop_spacing, 0])
