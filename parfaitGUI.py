@@ -80,4 +80,15 @@ class ParfaitGUI(QtWidgets.QDialog):
         
     @QtCore.Slot()
     def create(self):
-        
+        generate = self.parfait_generator
+        generate.glass_size = self.glass_size_dspnbx.value()
+        generate.scoop_amount = self.scoops_spnbx.value()
+        generate.flavor = self.flavor_cmbbox.currentText()
+        generate.add_cherry = self.cherry_cb.isChecked()
+        generate.straw_amount = self.straws_spnbx.value()
+        if self.enablegrpname_cb.isChecked():
+            generate.grpname = self.grpname_le.text()
+        generate.create()
+
+gui = ParfaitGUI()
+gui.show()
