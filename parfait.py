@@ -1,7 +1,4 @@
 import maya.cmds as cmds
-# create a procedural asset generator that creates an ice cream parfait.
-# create a class for the parfait
-
 
 FLAVORS = {
     "vanilla":(0.76, 0.69, 0.63),
@@ -9,24 +6,31 @@ FLAVORS = {
     "strawberry":(0.66, 0.36, 0.41),
     "cherry":(0.66, 0.12, 0.16),
 }
+COLORS = {
+    "glass":(0.57, 0.71, 0.67),
+    "straw":(0.36, 0.11, 0.09),
+}
 class Parfait():
 
     def __init__(self):
         self.glass_size = 1.0
-        self.scoop_amount  = 4
+        self.scoop_amount  = 2
         self.glass_radius = 0.5
         self.scoop_radius = self.glass_radius
         self.cherry_radius = .1
         self.add_cherry = True
         self.straw_amount = 2
         self.flavor = "chocolate"
-    # parameters for parfait will be cup size, amount of scoops, and toppings.
+        self.grpname = "customParfait"
+
+    # parameters for parfait will be cup size, flavor, amount of scoops, straws, and cherry.
 
     def create(self):
         self.create_glass()
         self.create_scoops()
         self.create_cherry()
         self.create_straws()
+        cmds.group(parts, name=self.grp_name)
         cmds.group([self.glass_obj, self.scoop_obj, self.cherry_obj, self.straw_obj], name="customParfait")
     # create glass cup size function
     # use user input for small or large glass
@@ -36,6 +40,8 @@ class Parfait():
         cmds.setAttr(f"{self.glass_obj}.translateY", self.glass_size)
         cmds.xform(rotation=[180, 0, 0])
         cmds.xform(translation=[0, self.glass_size/2, 0])
+        self.glassbtm_obj, self.glassbtm_node = cmds.polyCone(name="glass_btm", height=self.glass_size/2, radius=0.25)
+        cmds.xform(translation=[0, self.glass_size/4, 0])
 
     def scoops_flavor(self, flavor):
         shader_name = f"{flavor}_shader"
@@ -80,6 +86,9 @@ class Parfait():
             cmds.xform(self.cherry_obj, translation=[0, cherry_y, 0], worldSpace=True)
 
     def create_straws(self):
+        self.straws = []
+        if self.straw_amount < 1:
+            return
         self.straw_obj, self.straw_node = cmds.polyCylinder(name="straw#", radius=0.03, height=1.5)
         self.assign_flavor(self.straw_obj, "cherry")
         cmds.xform(self.straw_obj, translation=[.5, self.glass_size+.5, 0])
@@ -90,7 +99,6 @@ class Parfait():
             cmds.xform(straw_multiple, rotation=[-10, -10, -10])
             cmds.xform(straw_multiple, translation=[.5, self.glass_size+.5, -.1 * i])
             self.straws.append(straw_multiple)
-
 
 parfait1 = Parfait()
 parfait1.create()

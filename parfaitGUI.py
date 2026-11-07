@@ -1,0 +1,59 @@
+import importlib
+
+
+from PySide6 import QtWidgets, QtCore
+from shiboken6 import wrapInstance
+
+import maya.OpenMayaUI as omui
+
+import parfait
+importlib.reload(parfait)
+from parfait import Parfait, FLAVORS
+
+
+def get_main_maya_win():
+    main_win = omui.MQtUtil.mainWindow()
+    return wrapInstance(int(main_win), QtWidgets.QWidget)
+
+
+class ParfaitGUI(QtWidgets.QDialog):
+
+    def __init__(self):
+        super().__init__(parent=get_main_maya_win())
+        self.parfait_generator = Parfait()
+        self.setWindowTitle("Procedural Parfait")
+        self.setWindowFlag(QtCore.Qt.WindowType.Tool)
+        self.create_layout()
+        self.create_connections()
+    def create_layout(self):
+        self.main_lay = QtWidgets.QVBoxLayout()
+        self._form_ui()
+        self.create_btn = QtWidgets.QPushButton("Create")
+        self.main_lay.addWidget(self.create_btn)
+        self.setLayout(self.main_lay)
+
+    def _form_ui(self):
+        self.form_lay = QtWidgets.QFormLayout()
+
+        self.glass_size_dspnbx = QtWidgets.QDoubleSpinBox()
+        self.glass_size_dspnbx.setRange(0.5, 5.0)
+        self.glass_size_dspnbx.setSingleStep(0.5)
+        self.glass_size_dspnbx.setValue(self.parfait_generator.glass_size)
+        self.form_lay.addRow("Glass Size", self.glass_size_dspnbx)
+        
+
+    def create_connections(self):
+        self.enablegrpname_cb.toggled.connect(self.toggle_grpname_le)
+        self.create_btn.clicked.connect(self.create)
+
+    @QtCore.Slot()
+    def toggle_grpname_le(self):
+        self.grpname_le.setEnabled(self.enablegrpname_cb.isChecked())
+        
+    @QtCore.Slot()
+    def create(self):
+        self.snowman_generator.torso_radius = self.torso_rad_dspnbx.value()
+        self.snowman_generator.grp_name = self.grpname_le.text()
+        self.snowman_generator.create()
+
+ 
