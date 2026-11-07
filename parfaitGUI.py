@@ -40,6 +40,20 @@ class ParfaitGUI(QtWidgets.QDialog):
         self.glass_size_dspnbx.setSingleStep(0.5)
         self.glass_size_dspnbx.setValue(self.parfait_generator.glass_size)
         self.form_lay.addRow("Glass Size", self.glass_size_dspnbx)
+
+        self.scoops_spnbx = QtWidgets.QSpinBox()
+        self.scoops_spnbx.setRange(1, 5)
+        self.scoops_spnbx.setValue(self.parfait_generator.scoop_amount)
+        self.form_lay.addRow("Amount of Scoops", self.scoops_spnbx)
+
+        self.flavor_cmbbox = QtWidgets.QComboBox()
+        self.flavor_cmbbox.addItems([FLAVORS])
+        self.flavor_cmbbox.setCurrentText(self.parfait_generator.flavor)
+        self.form_lay.addRow("Flavor", self.flavor_cmbbox)
+
+        self.addcherry_cb = QtWidgets.QCheckBox()
+        self.addcherry_cb.setChecked(self.parfait_generator.a)
+        self.form_lay.addRow("Add Cherry", self.addcherry_cb)
         
 
     def create_connections(self):
