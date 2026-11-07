@@ -28,7 +28,7 @@ class Parfait():
         self.create_scoops()
         self.create_cherry()
         self.create_straws()
-        parts = [self.glass_obj, self.scoops] + self.straws
+        parts = [self.glass_obj, self.scoops_grp, self.glassbtm_obj] + self.straws
         if self.add_cherry:
             parts.append(self.cherry_obj)
         cmds.group(parts, name=self.grp_name)
