@@ -54,6 +54,11 @@ class ParfaitGUI(QtWidgets.QDialog):
         self.addcherry_cb = QtWidgets.QCheckBox()
         self.addcherry_cb.setChecked(self.parfait_generator.a)
         self.form_lay.addRow("Add Cherry", self.addcherry_cb)
+
+        self.straws_spnbx = QtWidgets.QSpinBox()
+        self.straws_spnbx.setRange(0, 4)
+        self.straws_spnbx.setValue(self.parfait_generator.straw_amount)
+        self.form_lay.addRow("Amount of Straws", self.straws_spnbx)
         
 
     def create_connections(self):
